@@ -33,15 +33,17 @@ public class DemoApplication implements CommandLineRunner {
         System.out.println("Текущее состояние: " + stateMachine.getState().getId());
 
         System.out.println("\n--- Действие: Толкаем турникет без оплаты ---");
-        stateMachine.sendEvent(Events.PUSH);
+        stateMachine.sendEvent(Events.ORDER_PLACED);
         System.out.println("Текущее состояние: " + stateMachine.getState().getId());
 
         System.out.println("\n--- Действие: Бросаем монетку ---");
-        stateMachine.sendEvent(Events.COIN);
-        System.out.println("Текущее состояние: " + stateMachine.getState().getId());
-
-        System.out.println("\n--- Действие: Проходим (толкаем) ---");
         stateMachine.sendEvent(Events.PUSH);
         System.out.println("Текущее состояние: " + stateMachine.getState().getId());
+        
+        System.out.println("\n--- Действие: вручили ---");
+        stateMachine.sendEvent(Events.READY);
+        System.out.println("Текущее состояние: " + stateMachine.getState().getId());
+
+        
     }
 }

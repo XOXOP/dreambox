@@ -20,17 +20,21 @@ class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States, Event
     public void configure(StateMachineStateConfigurer<States, Events> states) throws Exception {
         states
             .withStates()
-            .initial(States.LOCKED) // Стартуем в закрытом состоянии
-            .state(States.UNLOCKED);
+            .initial(States.REGISTERED) // Стартуем в закрытом состоянии
+            .state(States.IN_TRANSIT)
+            .state(States.ARRIVED)
+            .end(States.DELIVERED);
     }
-
+// REGISTERED, DELIVERED,ARRIVED,IN_TRANSIT
     @Override
     public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
         transitions
             // Если LOCKED и бросили COIN -> переходим в UNLOCKED
-            .withExternal().source(States.LOCKED).target(States.UNLOCKED).event(Events.COIN)
+            .withExternal().source(States.REGISTERED).target(States.IN_TRANSIT).event(Events.ORDER_PLACED)
             .and()
             // Если UNLOCKED и сделали PUSH -> переходим обратно в LOCKED
-            .withExternal().source(States.UNLOCKED).target(States.LOCKED).event(Events.PUSH);
+            .withExternal().source(States.IN_TRANSIT).target(States.ARRIVED).event(Events.PUSH)
+            .and()
+            .withExternal().source(States.ARRIVED).target(States.DELIVERED).event(Events.READY);
     }
 }

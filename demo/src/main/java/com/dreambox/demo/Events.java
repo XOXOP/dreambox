@@ -1,3 +1,3 @@
 package com.dreambox.demo;
 
-public enum Events { COIN, PUSH }
+public enum Events { ORDER_PLACED, PUSH, READY }
